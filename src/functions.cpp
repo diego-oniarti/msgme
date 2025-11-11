@@ -1,9 +1,29 @@
-#include <cstdio>
-#include <cstdlib>
+#include "functions.h"
+#include "bot.h"
 #include <filesystem>
 #include <iostream>
 #include <string>
-int main (int argc, char *argv[]) {
+
+void interactive() {
+    Bot bot = get_bot();
+    while (true) {
+        std::string usrstr;
+        std::cin >> usrstr;
+
+        if (usrstr.length()==0) continue;
+
+        switch (usrstr[0]) {
+            case 'q':
+                exit(0);
+            case '-':
+                usrstr.erase(0,1);
+                bot.sendMsg(usrstr.c_str());
+                break;
+        }
+    }
+}
+
+void ask_creds() {
     std::string token, chat;
     std::cout << "Bot token: ";
     std::cin >> token;
@@ -19,6 +39,4 @@ int main (int argc, char *argv[]) {
     FILE *conf = fopen(confpath.c_str(), "w");
     fprintf(conf, "%s\n%s\n", token.c_str(), chat.c_str());
     fclose(conf);
-
-    return 0;
 }

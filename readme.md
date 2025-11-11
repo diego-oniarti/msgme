@@ -2,7 +2,7 @@
 ```sh
 sudo make dependencies
 sudo make install
-msgmecreds
+msgme creds
 ```
 
 # Usage
@@ -11,9 +11,9 @@ Calling `msgme` with no arguments enters the interactive mode.
 In interactive mode enter messages preceded by a dash (`-`) or quit with `q`.
 
 # TODO
-- [ ] Remove msgmecreds and make them one executable with options
-    - [ ] msgme
-    - [ ] msgme send [message]
-    - [ ] msgme creds
+- [x] Remove msgmecreds and make them one executable with options
+    - [x] msgme
+    - [x] msgme send [message]
+    - [x] msgme creds
     - [ ] msgme getuser
 - [ ] Use an argument parser with nice formatting

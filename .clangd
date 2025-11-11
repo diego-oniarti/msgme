@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -I./src
+    - -I/home/diego/src/gmp-6.3.0

@@ -1,11 +1,6 @@
 APPNAME  = msgme
-CONFNAME = msgmecreds
-
-MSGMEOUT = bin/$(APPNAME)
-CONFOUT  = bin/$(CONFNAME)
-
-MSGME = msgme.cpp
-CONF  = msgmecreds.cpp
+OUT = bin/$(APPNAME)
+MAIN = main.cpp
 
 SRC   = $(wildcard src/*.cpp)
 OBJ   = $(SRC:src/%.cpp=obj/%.o)
@@ -16,15 +11,15 @@ LDFLAGS  = -lTgBot -lboost_system -lssl -lcrypto -lpthread
 
 PREFIX = /urs/local
 
-all: $(MSGMEOUT) $(CONFOUT)
+all: $(OUT)
 
 clean:
 	rm -rf bin obj
 
-run: $(MSGMEOUT)
-	./$(MSGMEOUT)
+run: $(OUT)
+	./$(OUT)
 
-install: $(MSGMEOUT) $(CONFOUT)
+install: $(OUT)
 	mkdir -p $(PREFIX)/bin
 	sudo cp $^ $(PREFIX)/bin
 
@@ -40,24 +35,14 @@ dependencies:
 .PHONY: all clean run install
 
 
-$(MSGMEOUT): $(OBJ) obj/msgme.o
+$(OUT): $(OBJ) obj/msgme.o
 	mkdir -p bin
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-
-$(CONFOUT): $(OBJ) obj/msgmecreds.o
-	mkdir -p bin
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-
 
 obj/%.o: src/%.cpp
 	mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-
-obj/msgme.o: $(MSGME)
-	mkdir -p obj
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-obj/msgmecreds.o: $(CONF)
+obj/msgme.o: $(MAIN)
 	mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c $< -o $@
