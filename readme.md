@@ -1,16 +1,19 @@
-# TODO
-- [ ] Add setup script to generate `bin` in a more portable way
-- [ ] Use `argparse` instead of doing it manually
-- [ ] Add a script to generate the `.env` file
+# Setup
+```sh
+sudo make dependencies
+sudo make install
+msgmecreds
+```
 
 # Usage
-Either call
-```sh
-msgme [text]
-```
-Or call `msgme` with no arguments to enter the interactive mode.  
-In interactive mode enter messages preceded by a dash (`-`) or quit with `q`
+To send a single message call `msgme [text]`.  
+Calling `msgme` with no arguments enters the interactive mode.  
+In interactive mode enter messages preceded by a dash (`-`) or quit with `q`.
 
-# .env
-TOKEN=  
-CHATID=  
+# TODO
+- [ ] Remove msgmecreds and make them one executable with options
+    - [ ] msgme
+    - [ ] msgme send [message]
+    - [ ] msgme creds
+    - [ ] msgme getuser
+- [ ] Use an argument parser with nice formatting

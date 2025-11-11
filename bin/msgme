@@ -1,2 +1,0 @@
-#! /bin/sh
-. ~/msgme/.venv/bin/activate && python3 ~/msgme/main.py "$@"
