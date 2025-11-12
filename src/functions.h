@@ -1,4 +1,5 @@
 #pragma once
 
 void interactive();
-void ask_creds();
+void config();
+void setuser();

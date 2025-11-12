@@ -1,11 +1,15 @@
 #include "functions.h"
 #include "bot.h"
+#include <algorithm>
+#include <atomic>
+#include <cstdio>
 #include <filesystem>
 #include <iostream>
 #include <string>
+#include <tgbot/tgbot.h>
+#include <thread>
 
-void interactive() {
-    Bot bot = get_bot();
+void interactive() { Bot bot = get_bot();
     while (true) {
         std::string usrstr;
         std::cin >> usrstr;
@@ -23,20 +27,71 @@ void interactive() {
     }
 }
 
-void ask_creds() {
+void config() {
     std::string token, chat;
     std::cout << "Bot token: ";
-    std::cin >> token;
-    std::cout << "User id: ";
-    std::cin >> chat;
-
-    std::filesystem::path home = std::getenv("HOME");
-    std::filesystem::path confdir = home / ".config" / "msgme";
-    std::filesystem::path confpath = confdir / "creds";
+    std::getline(std::cin, token);
+    std::cout << "User id: (leave empty if unknown)";
+    std::getline(std::cin, chat);
 
     bool created = std::filesystem::create_directories(confdir);
 
-    FILE *conf = fopen(confpath.c_str(), "w");
+    FILE *conf = fopen(credspath.c_str(), "w");
     fprintf(conf, "%s\n%s\n", token.c_str(), chat.c_str());
     fclose(conf);
+
+    if (chat.empty()) {
+        std::cout << "No userid given. Launch assistant? [Y, n]" << std::endl;
+        std::string reply;
+        getline(std::cin, reply);
+        std::transform(reply.begin(), reply.end(), reply.begin(), ::tolower);
+        if (reply=="no" || reply=="n") return;
+        setuser();
+    }
+}
+
+void setuser() {
+    Bot bot = get_bot();
+    TgBot::Bot *tgbot = &bot.tgbot;
+
+    long id = 0;
+    tgbot->getEvents().onAnyMessage([&id](TgBot::Message::Ptr message) {
+        printf("[%ld - %s %s]: %s\n",
+                message->chat->id,
+                message->chat->firstName.c_str(),
+                message->chat->lastName.c_str(),
+                message->text.c_str()
+                );
+        fflush(stdout);
+        id = message->chat->id;
+    });
+
+    std::atomic<bool> run(true);
+    std::thread waiter([&run](){
+            std::string dummy;
+            std::getline(std::cin, dummy);
+            run=false;
+            });
+
+    TgBot::TgLongPoll longpoll(*tgbot, 100, 1);
+    std::cout << "Send a message to the bot. Press enter to stop" << std::endl;
+    while (run) {
+        longpoll.start();
+    }
+    waiter.join();
+
+    printf("ID: %ld\nSave to config file? [Y, n]\n", id);
+    std::string reply;
+    getline(std::cin, reply);
+    std::transform(reply.begin(), reply.end(), reply.begin(), ::tolower);
+
+    if (reply=="no" || reply=="n") return;
+
+    FILE *creds = fopen(credspath.c_str(), "r+");
+    char c;
+    do {
+        c = fgetc(creds);
+    }while(c!='\n' && c!=EOF);
+    fprintf(creds, "%ld\n", id);
+    fclose(creds);
 }

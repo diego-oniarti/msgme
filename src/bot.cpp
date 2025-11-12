@@ -2,23 +2,24 @@
 #include <filesystem>
 #include <iostream>
 
-Bot::Bot(std::string token, std::string chat): bot(token), chat(chat){}
+std::filesystem::path home = std::getenv("HOME");
+std::filesystem::path confdir = home / ".config" / "msgme";
+std::filesystem::path credspath = confdir / "creds";
+
+Bot::Bot(std::string token, std::string chat): tgbot(token), chat(chat){}
 
 void Bot::sendMsg(const char* msg) {
-    bot.getApi().sendMessage(chat, msg);
+    tgbot.getApi().sendMessage(chat, msg);
 }
 
 Bot get_bot() {
-    std::filesystem::path home = std::getenv("HOME");
-    std::filesystem::path credsfile = home / ".config" / "msgme" / "creds";
-
-    if (!std::filesystem::exists(credsfile)) {
+    if (!std::filesystem::exists(credspath)) {
         std::cerr << "Missing credentials.\nSet them with msgme creds" << std::endl;
         exit(1);
     }
 
     std::string token, chatid;
-    std::ifstream config(credsfile);
+    std::ifstream config(credspath);
     config >> token >> chatid;
 
     return Bot(token.c_str(), chatid.c_str());
