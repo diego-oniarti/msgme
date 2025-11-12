@@ -17,21 +17,21 @@ int main (int argc, char *argv[]) {
         return 0;
     }
 
-    if (strcmp(argv[1], "send")) {
-        if (argc!=2) {
-            std::cerr << "usage:\nmsgme send [message]\n";
+    if (strcmp(argv[1], "send")==0) {
+        if (argc!=3) {
+            std::cerr << "Usage:\nmsgme send [message]\n";
             exit(1);
         }
-        get_bot().sendMsg(argv[1]);
+        get_bot().sendMsg(argv[2]);
         return 0;
     }
 
-    if (strcmp(argv[1], "creds")) {
+    if (strcmp(argv[1], "creds")==0) {
         ask_creds();
         return 0;
     }
 
-    if (strcmp(argv[1], "getuser")) {
+    if (strcmp(argv[1], "getuser")==0) {
         std::cerr << "Not implemented\n";
         return 1;
     }

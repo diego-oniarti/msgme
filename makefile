@@ -9,7 +9,7 @@ CXX   = g++
 CXXFLAGS = -O3 -I./src -std=c++17
 LDFLAGS  = -lTgBot -lboost_system -lssl -lcrypto -lpthread
 
-PREFIX = /urs/local
+PREFIX = /usr/local
 
 all: $(OUT)
 
@@ -21,7 +21,7 @@ run: $(OUT)
 
 install: $(OUT)
 	mkdir -p $(PREFIX)/bin
-	sudo cp $^ $(PREFIX)/bin
+	sudo cp $^ $(PREFIX)/bin/
 
 dependencies:
 	sudo apt install g++ make binutils cmake libboost-system-dev libssl-dev zlib1g-dev libcurl4-openssl-dev
