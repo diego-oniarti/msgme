@@ -19,3 +19,4 @@ In interactive mode enter messages preceded by a dash (`-`) or quit with `q`.
 # TODO
 - [ ] Use an argument parser with nice formatting
 - [ ] Move configuration to FTXUI
+- [ ] Move to CMake

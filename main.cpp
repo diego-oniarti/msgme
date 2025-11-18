@@ -1,13 +1,32 @@
+#define _Bool bool
+
 #include <cstdio>
 #include <cstring>
 #include <iostream>
 
-#include "src/functions.h"
+#include "src/commands.h"
 #include "src/bot.h"
+
+#define REQUIRED_ARGS \
+    REQUIRED_STRING_ARG(command, "command", "Command")
+
+#define OPTIONAL_ARGS \
+    OPTIONAL_STRING_ARG(message, "Hello", "-m", "message", "Message to be sent")
+
+#define BOOLEAN_ARGS \
+        BOOLEAN_ARG(help, "-h", "Show help")
+
+#include "easyargs.h"
 
 void printusage();
 
 int main (int argc, char *argv[]) {
+    args_t args = make_default_args();
+    if (!parse_args(argc, argv, &args) || args.help) {
+        print_help(argv[0]);
+        return 1;
+    }
+
     if (argc > 3) {
         std::cerr << "Too many arguments\n";
         return 1;

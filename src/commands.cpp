@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "commands.h"
 #include "bot.h"
 #include <algorithm>
 #include <atomic>
