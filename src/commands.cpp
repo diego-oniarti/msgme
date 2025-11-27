@@ -9,7 +9,8 @@
 #include <tgbot/tgbot.h>
 #include <thread>
 
-void interactive() { Bot bot = get_bot();
+int interactive(int argc, char** argv) {
+    Bot bot = get_bot();
     while (true) {
         std::string usrstr;
         std::cin >> usrstr;
@@ -18,7 +19,7 @@ void interactive() { Bot bot = get_bot();
 
         switch (usrstr[0]) {
             case 'q':
-                exit(0);
+                return 0;
             case '-':
                 usrstr.erase(0,1);
                 bot.sendMsg(usrstr.c_str());
@@ -27,7 +28,7 @@ void interactive() { Bot bot = get_bot();
     }
 }
 
-void config() {
+int config(int argc, char** argv) {
     std::string token, chat;
     std::cout << "Bot token: ";
     std::getline(std::cin, token);
@@ -45,12 +46,14 @@ void config() {
         std::string reply;
         getline(std::cin, reply);
         std::transform(reply.begin(), reply.end(), reply.begin(), ::tolower);
-        if (reply=="no" || reply=="n") return;
-        setuser();
+        if (reply=="no" || reply=="n") return 0;
+        setuser(argc, argv);
     }
+
+    return 0;
 }
 
-void setuser() {
+int setuser(int argc, char** argv) {
     Bot bot = get_bot();
     TgBot::Bot *tgbot = &bot.tgbot;
 
@@ -85,7 +88,7 @@ void setuser() {
     getline(std::cin, reply);
     std::transform(reply.begin(), reply.end(), reply.begin(), ::tolower);
 
-    if (reply=="no" || reply=="n") return;
+    if (reply=="no" || reply=="n") return 0;
 
     FILE *creds = fopen(credspath.c_str(), "r+");
     char c;
@@ -94,4 +97,15 @@ void setuser() {
     }while(c!='\n' && c!=EOF);
     fprintf(creds, "%ld\n", id);
     fclose(creds);
+
+    return 0;
+}
+
+int send(int argc, char** argv) {
+    if (argc!=1) {
+        std::cerr << "Usage:\nmsgme send [message]\n";
+        return 1;
+    }
+    get_bot().sendMsg(argv[0]);
+    return 0;
 }
