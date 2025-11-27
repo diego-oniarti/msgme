@@ -12,6 +12,10 @@ void Bot::sendMsg(const char* msg) {
     tgbot.getApi().sendMessage(chat, msg);
 }
 
+TgBot::Bot* Bot::getTgBot() {
+    return &(this->tgbot);
+}
+
 Bot get_bot() {
     if (!std::filesystem::exists(credspath)) {
         std::cerr << "Missing credentials.\nSet them with msgme creds" << std::endl;

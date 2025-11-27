@@ -7,10 +7,11 @@ extern std::filesystem::path home, confdir, credspath;
 class Bot {
 private:
     const std::string chat;
-public:
     TgBot::Bot tgbot;
+public:
     Bot(std::string token, std::string chat);
     void sendMsg(const char* msg);
+    TgBot::Bot* getTgBot();
 };
 
 Bot get_bot();
