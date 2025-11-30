@@ -14,4 +14,4 @@ public:
     TgBot::Bot* getTgBot();
 };
 
-Bot get_bot();
+Bot *get_bot();

@@ -4,7 +4,7 @@
 #include <iostream>
 
 int interactive(int argc, char** argv) {
-    Bot bot = get_bot();
+    Bot *bot = get_bot();
     while (true) {
         std::string usrstr;
         std::cin >> usrstr;
@@ -16,7 +16,7 @@ int interactive(int argc, char** argv) {
                 return 0;
             case '-':
                 usrstr.erase(0,1);
-                bot.sendMsg(usrstr.c_str());
+                bot->sendMsg(usrstr.c_str());
                 break;
         }
     }

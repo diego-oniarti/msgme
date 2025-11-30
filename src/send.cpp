@@ -8,6 +8,6 @@ int send(int argc, char** argv) {
         std::cerr << "Usage:\nmsgme send [message]\n";
         return 1;
     }
-    get_bot().sendMsg(argv[0]);
+    get_bot()->sendMsg(argv[0]);
     return 0;
 }

@@ -2,6 +2,8 @@
 #include <filesystem>
 #include <iostream>
 
+static Bot *bot_instance = NULL;
+
 std::filesystem::path home = std::getenv("HOME");
 std::filesystem::path confdir = home / ".config" / "msgme";
 std::filesystem::path credspath = confdir / "creds";
@@ -16,7 +18,8 @@ TgBot::Bot* Bot::getTgBot() {
     return &(this->tgbot);
 }
 
-Bot get_bot() {
+Bot *get_bot() {
+    if (bot_instance!=NULL) return bot_instance;
     if (!std::filesystem::exists(credspath)) {
         std::cerr << "Missing credentials.\nSet them with msgme creds" << std::endl;
         exit(1);
@@ -26,5 +29,6 @@ Bot get_bot() {
     std::ifstream config(credspath);
     config >> token >> chatid;
 
-    return Bot(token.c_str(), chatid.c_str());
+    bot_instance = new Bot(token.c_str(), chatid.c_str());
+    return bot_instance;
 }

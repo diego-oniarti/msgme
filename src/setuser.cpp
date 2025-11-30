@@ -4,8 +4,8 @@
 #include <tgbot/tgbot.h>
 
 int setuser(int argc, char** argv) {
-    Bot bot = get_bot();
-    TgBot::Bot *tgbot = bot.getTgBot();
+    Bot *bot = get_bot();
+    TgBot::Bot *tgbot = bot->getTgBot();
 
     long id = 0;
     tgbot->getEvents().onAnyMessage([&id](TgBot::Message::Ptr message) {
