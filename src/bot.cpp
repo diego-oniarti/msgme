@@ -21,7 +21,7 @@ TgBot::Bot* Bot::getTgBot() {
 Bot *get_bot() {
     if (bot_instance!=NULL) return bot_instance;
     if (!std::filesystem::exists(credspath)) {
-        std::cerr << "Missing credentials.\nSet them with msgme creds" << std::endl;
+        std::cerr << "Missing credentials.\nSet them with msgme config" << std::endl;
         exit(1);
     }
 

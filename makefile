@@ -7,7 +7,7 @@ OBJ   = $(SRC:src/%.cpp=obj/%.o)
 
 CXX   = g++
 CXXFLAGS = -O3 -I./src -std=c++17
-LDFLAGS  = -lTgBot -lboost_system -lssl -lcrypto -lpthread
+LDFLAGS  = -lTgBot -lboost_system -lssl -lcrypto -lpthread -lncurses -lpanel -lmenu
 
 PREFIX = /usr/local
 
