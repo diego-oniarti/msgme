@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-int config(int argc, char** argv) {
+int config() {
     std::string token, chat;
     std::cout << "Bot token: ";
     std::getline(std::cin, token);
@@ -22,7 +22,7 @@ int config(int argc, char** argv) {
         getline(std::cin, reply);
         std::transform(reply.begin(), reply.end(), reply.begin(), ::tolower);
         if (reply=="no" || reply=="n") return 0;
-        setuser(argc, argv);
+        setuser();
     }
 
     return 0;

@@ -8,7 +8,7 @@
 #include <panel.h>
 #include <menu.h>
 
-int setuser(int argc, char** argv) {
+int setuser() {
     const char instruction_msg[] = "Send a message to the bot";
     const char instruction_msg2[] = "Press q to cancel";
     const char confirm_msg[] = "Is this you?";

@@ -1,40 +1,24 @@
-#include <map>
-#include <cstdio>
-#include <cstring>
-#include <string>
-
+#include "src/CLI11.hpp"
 #include "src/commands.h"
 
-void printusage();
+int main(int argc, char *argv[]) {
+    CLI::App app{"msgme - Send messages via Telegram"};
+    app.require_subcommand(1);
 
-int main (int argc, char *argv[]) {
-    if (argc < 2) {
-        printusage();
-        return 1;
-    }
+    std::string msg;
+    CLI::App *send_cmd = app.add_subcommand("send", "Send a single message");
+    send_cmd->add_option("message", msg, "Text to send")->required();
+    send_cmd->callback([&msg]() { send(msg); });
 
-    // Print help
-    if (strcmp(argv[1], "-h")==0) {
-        printusage();
-        return 0;
-    }
+    app.add_subcommand("interactive", "Start interactive mode")
+       ->callback(interactive);
 
-    std::map<std::string, int(*)(int, char**)> comandi = {
-        { "interactive", interactive },
-        { "send", send },
-        { "config", config },
-        { "setuser", setuser },
-    };
+    app.add_subcommand("config", "Configure bot token and optionally user id")
+       ->callback(config);
 
-    auto cmd = comandi.find(argv[1]);
-    if (cmd == comandi.end()) {
-        printusage();
-        return 1;
-    }
+    app.add_subcommand("setuser", "Set or update Telegram user id")
+       ->callback(setuser);
 
-    return (*cmd).second(argc-2, argv+2);
-}
-
-void printusage() {
-    fprintf(stderr, "Usage: msgme <command> [msg]\nCommands:\ninteractive\nsend\nconfig\nsetuser\n");
+    CLI11_PARSE(app, argc, argv);
+    return 0;
 }

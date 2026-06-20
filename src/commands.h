@@ -1,6 +1,8 @@
 #pragma once
 
-int interactive(int, char**);
-int config(int, char**);
-int setuser(int, char**);
-int send(int, char**);
+#include <string>
+
+int interactive();
+int config();
+int setuser();
+int send(std::string msg);

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-int interactive(int argc, char** argv) {
+int interactive() {
     Bot *bot = get_bot();
     while (true) {
         std::string usrstr;
