@@ -1,7 +1,8 @@
 # Setup
 ```sh
-sudo make dependencies
-sudo make install
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build
 msgme config
 ```
 
