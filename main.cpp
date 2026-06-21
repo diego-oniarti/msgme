@@ -1,4 +1,4 @@
-#include "src/CLI11.hpp"
+#include <CLI/CLI.hpp>
 #include "src/commands.h"
 
 int main(int argc, char *argv[]) {
