@@ -7,7 +7,7 @@ int interactive() {
     Bot *bot = get_bot();
     while (true) {
         std::string usrstr;
-        std::cin >> usrstr;
+        std::getline(std::cin, usrstr);
 
         if (usrstr.length()==0) continue;
 
