@@ -1,8 +1,10 @@
 #include "bot.h"
 #include "commands.h"
 
+#include <algorithm>
 #include <filesystem>
 #include <iostream>
+#include <iterator>
 
 #include "ftxui/component/app.hpp"
 #include "ftxui/component/component.hpp"
@@ -34,9 +36,6 @@ int config() {
     Component buttons   = Container::Horizontal({button_confirm, button_abort});
     Component container = Container::Vertical({input_token, input_chat, buttons});
 
-    int       i       = 0;
-    Component comps[] = {input_token, input_chat, buttons};
-
     auto renderer = Renderer(container, [&] {
         return vbox(hbox(text(" Bot Token*: "), input_token->Render()),
                     hbox(text(" Chat id:    "), input_chat->Render()), separator(),
@@ -45,13 +44,15 @@ int config() {
     });
 
     renderer |= CatchEvent([&](Event e) {
+        int i = container->ActiveChild()->Index();
+
         // Enter works like CtrlN only when navigating the inputs (index 0 and 1)
         if (e == Event::CtrlN || (e == Event::Return && i < 2)) {
-            container->SetActiveChild(comps[++i % 3]);
+            container->SetActiveChild(container->ChildAt((i + 1) % 3));
             return true;
         }
         if (e == Event::CtrlP) {
-            container->SetActiveChild(comps[(--i + 3) % 3]);
+            container->SetActiveChild(container->ChildAt((i - 1 + 3) % 3));
             return true;
         }
         return false;
