@@ -18,7 +18,7 @@ int setuser() {
     Bot        *bot   = get_bot();
     TgBot::Bot *tgbot = bot->getTgBot();
 
-    TgBot::TgLongPoll longpoll(*tgbot, 100, 1);
+    TgBot::TgLongPoll longpoll(*tgbot, 50, 1);
 
     struct MessageData {
         long        id;
