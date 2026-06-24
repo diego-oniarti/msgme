@@ -1,10 +1,7 @@
 #include "bot.h"
 #include "commands.h"
 
-#include <algorithm>
 #include <filesystem>
-#include <iostream>
-#include <iterator>
 
 #include "ftxui/component/app.hpp"
 #include "ftxui/component/component.hpp"
@@ -37,8 +34,13 @@ int config() {
     Component container = Container::Vertical({input_token, input_chat, buttons});
 
     auto renderer = Renderer(container, [&] {
-        return vbox(hbox(text(" Bot Token*: "), input_token->Render()),
-                    hbox(text(" Chat id:    "), input_chat->Render()), separator(),
+        return vbox(paragraph("Enter your bot's API token and your own user_id.\nIf you are unsure about the user_id "
+                              "you may leave the field empty") |
+                        size(HEIGHT, EQUAL, 3),
+                    // Here the height is hard-coded because otherwise the buttons at the bottom get cut off. This is
+                    // because FTXUI fails to calculate the size of the paragraph correctly after a line break
+                    separatorEmpty(), hbox(text(" Bot Token: "), input_token->Render()),
+                    hbox(text(" Chat id:   "), input_chat->Render()), separatorEmpty(),
                     hbox(button_confirm->Render(), button_abort->Render())) |
                border | size(WIDTH, LESS_THAN, 60);
     });
@@ -70,7 +72,7 @@ int config() {
 
     if (!chat_id.empty()) return 0;
 
-    screen               = App::TerminalOutput();
+    screen           = App::TerminalOutput();
     Component button_yes = Button("Yes", screen.ExitLoopClosure(), ButtonOption::Ascii());
     Component button_no  = Button(
         "No",

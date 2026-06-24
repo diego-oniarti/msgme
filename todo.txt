@@ -1,0 +1,2 @@
+2026-06-24 in the `--help` page, make the behaviour of `interactive` mode more clear
+2026-06-24 make subcommands optional and add flags `--set-token` and `--set-user` to configure the app without the setup wizard

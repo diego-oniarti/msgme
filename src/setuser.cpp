@@ -67,8 +67,11 @@ int setuser() {
 
     Component buttons = Container::Horizontal({button_yes, button_no});
 
-    auto waiting = Renderer(
-        [&] { return vbox(text("Send a message to the bot") | center, text("Press q to cancel") | center) | center; });
+    auto waiting = Renderer([&] {
+        return vbox(text("Send a message to the bot") | center, text("Press q to cancel") | center,
+                    text("(May not be responsive)") | center) |
+               center;
+    });
 
     auto confirming = Renderer(buttons, [&] {
         return vbox(text("Is this you?") | center | bold, separator(),
